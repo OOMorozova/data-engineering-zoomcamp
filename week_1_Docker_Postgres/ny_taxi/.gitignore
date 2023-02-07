@@ -1,0 +1,6 @@
+# Default ignored files
+/postgresql
+/pgadmin
+/main.py
+/yellow_tripdata_2021-01.csv
+/output.csv

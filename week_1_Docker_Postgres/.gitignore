@@ -1,0 +1,5 @@
+# Default ignored files
+/venv
+/.idea
+/taxi+_zone_lookup.csv
+/green_tripdata_2019-01.csv
