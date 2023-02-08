@@ -32,10 +32,7 @@ with your team. Prefect can look in the GitHub repo to find your flow code and r
 Run your deployment in a local subprocess (the default if you don’t specify an infrastructure). Use the Green taxi data for the month of November 2020.
 How many rows were processed by the script?
 
-88,019
-192,297
 88,605
-190,225
 
 Question 5. Email or Slack notifications
 Q5. It’s often helpful to be notified when something with your dataflow doesn’t work as planned. Choose one of the options below
@@ -56,9 +53,6 @@ Test the functionality.
 Alternatively, you can grab the webhook URL from your own Slack workspace and Slack App that you create.
 How many rows were processed by the script?
 
-125,268
-377,922
-728,390
 514,392
 
 Question 6. Secrets
