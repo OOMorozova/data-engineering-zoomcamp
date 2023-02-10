@@ -128,6 +128,7 @@ dmypy.json
 
 # Editors
 .idea/
+/.idea
 .vscode/
 .tmp/
 *-deployment.yaml
@@ -137,5 +138,5 @@ dmypy.json
 *.csv
 *.json
 *.gz
-
+main.py
 
