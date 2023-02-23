@@ -1,8 +1,15 @@
 {{ config(materialized="view") }}
 
+with tripdata as 
+(
+  select *,
+    row_number() over(partition by cast(PUlocationID as integer), pickup_datetime) as rn
+  from {{ source("staging", "fhv_tripdata") }}
+  where PUlocationID is not null 
+)
 select
     -- identifiers
-    {{ dbt_utils.surrogate_key(['pickup_datetime', 'PUlocationID']) }} as tripid,
+    {{ dbt_utils.surrogate_key(['PUlocationID', 'pickup_datetime']) }} as tripid,
 
     dispatching_base_num as dispatching_base_num,
     cast(PUlocationID as integer) as pickup_locationid,
@@ -16,7 +23,7 @@ select
     -- trip info
     SR_Flag
 
-from {{ source("staging", "fhv_tripdata") }}
+from tripdata
 
 
 
