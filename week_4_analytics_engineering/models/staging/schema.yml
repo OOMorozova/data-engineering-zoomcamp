@@ -3,13 +3,9 @@ version: 2
 
 sources:
     - name: staging
-      #For bigquery:
-      #database: taxi-rides-ny-339813
 
-      # For postgres:
-      database: production
-
-      schema: trips_data_all
+      database: eco-shift-375819
+      schema: dezoomcamp
 
       # loaded_at_field: record_loaded_at
       tables:
