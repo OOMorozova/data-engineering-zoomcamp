@@ -2,7 +2,7 @@
 
 select
     -- identifiers
-    {{ dbt_utils.surrogate_key(['vendorid', 'tpep_pickup_datetime']) }} as tripid,
+    {{ dbt_utils.surrogate_key(['vendorid', 'tpep_pickup_datetime', 'pulocationid']) }} as tripid,
     cast(vendorid as integer) as vendorid,
     cast(ratecodeid as integer) as ratecodeid,
     cast(pulocationid as integer) as pickup_locationid,
@@ -16,7 +16,7 @@ select
     store_and_fwd_flag,
     cast(passenger_count as integer) as passenger_count,
     cast(trip_distance as numeric) as trip_distance,
-    1 as trip_type,
+    2 as trip_type,
 
     -- payment info
     cast(fare_amount as numeric) as fare_amount,
@@ -30,7 +30,7 @@ select
     cast(payment_type as integer) as payment_type,
     {{ get_payment_type_description("payment_type") }} as payment_type_description,
     cast(congestion_surcharge as numeric) as congestion_surcharge
-from {{ source("staging", "yellow_tripdata_patitioned") }}
+from {{ source("staging", "yellow_tripdata") }}
 where vendorid is not null
 
 
