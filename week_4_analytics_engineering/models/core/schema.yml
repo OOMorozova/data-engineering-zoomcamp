@@ -23,4 +23,7 @@ models:
             - not_null:
                 severity: error
       
-      
+  - name: fact_fhv_trips
+    description: >
+      fvh trips
+

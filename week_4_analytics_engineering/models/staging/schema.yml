@@ -4,14 +4,19 @@ version: 2
 sources:
     - name: staging
       #For bigquery:
-      database: eco-shift-375819
-      schema: dezoomcamp
+      #database: taxi-rides-ny-339813
+
+      # For postgres:
+      database: production
+
+      schema: trips_data_all
+
       # loaded_at_field: record_loaded_at
       tables:
-        - name: yellow_tripdata
         - name: green_tripdata
-        - name: fhv_tripdata
-
+        - name: yellow_tripdata
+         # freshness:
+           # error_after: {count: 6, period: hour}
 
 models:
     - name: stg_green_tripdata
