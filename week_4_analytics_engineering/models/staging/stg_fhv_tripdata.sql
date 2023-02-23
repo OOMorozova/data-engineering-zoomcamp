@@ -2,10 +2,10 @@
 
 with tripdata as 
 (
-  select *,
-    row_number() over(partition by cast(PUlocationID as integer), pickup_datetime) as rn
+  select *
+    ,row_number() over(partition by cast(PUlocationID as integer), pickup_datetime) as rn
   from {{ source("staging", "fhv_tripdata") }}
-  where PUlocationID is not null 
+--   where PUlocationID is not null 
 )
 select
     -- identifiers
@@ -24,6 +24,7 @@ select
     SR_Flag
 
 from tripdata
+-- where rn = 1
 
 
 
