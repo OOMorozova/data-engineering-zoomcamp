@@ -1,80 +1,80 @@
-# Data Engineering Zoomcamp 2023 Week 2 
-## Prefect
+## Week 2 Homework
 
-This repo contains Python code to accompany the videos that show how to use Prefect for Data Engineering. We will create ETL workflows to extract, transform, and load your data.
+The goal of this homework is to familiarise users with workflow orchestration and observation. 
 
-We will use Postgres and GCP's Google Cloud Storage and BigQuery. 
 
-Prefect helps you observe and orchestrate your dataflows.
+## Question 1. Load January 2020 data
 
-# Setup
+Using the `etl_web_to_gcs.py` flow that loads taxi data into GCS as a guide, create a flow that loads the green taxi CSV dataset for January 2020 into GCS and run it. Look at the logs to find out how many rows the dataset has.
 
-## Clone the repo
+How many rows does that dataset have?
 
-Clone the repo locally.
+* 447,770
 
-## Install packages
+## Question 2. Scheduling with Cron
 
-In a conda environment, install all package dependencies with 
+Cron is a common scheduling specification for workflows. 
 
-```bash
-pip install -r requirements.txt
-```
-## Start the Prefect Orion server locally
+Using the flow in `etl_web_to_gcs.py`, create a deployment to run on the first of every month at 5am UTC. What’s the cron schedule for that?
 
-Create another window and activate your conda environment. Start the Orion API server locally with 
+- `0 5 1 * *`
 
-```bash
-prefect orion start
-```
+## Question 3. Loading data to BigQuery 
 
-## Set up GCP 
+Using `etl_gcs_to_bq.py` as a starting point, modify the script for extracting data from GCS and loading it into BigQuery. This new script should not fill or remove rows with missing values. (The script is really just doing the E and L parts of ETL).
 
-- Log in to [GCP](https://cloud.google.com/)
-- Create a Project
-- Set up Cloud Storage
-- Set up BigQuery
-- Create a service account with the required policies to interact with both services
+The main flow should print the total number of rows processed by the script. Set the flow decorator to log the print statement.
 
-## Register the block types that come with prefect-gcp
+Parametrize the entrypoint flow to accept a list of months, a year, and a taxi color. 
 
-`prefect block register -m prefect_gcp`
+Make any other necessary changes to the code for it to function as required.
 
-## Create Prefect GCP blocks
+Create a deployment for this flow to run in a local subprocess with local flow code storage (the defaults).
 
-Create a *GCP Credentials* block in the UI.
+Make sure you have the parquet data files for Yellow taxi data for Feb. 2019 and March 2019 loaded in GCS. Run your deployment to append this data to your BiqQuery table. How many rows did your flow code process?
 
-Paste your service account information from your JSON file into the *Service Account Info* block's field.
+- 14,851,920
 
-![img.png](images/img.png)
+## Question 4. Github Storage Block
 
-Create a GCS Bucket block in UI 
+Using the `web_to_gcs` script from the videos as a guide, you want to store your flow code in a GitHub repository for collaboration with your team. Prefect can look in the GitHub repo to find your flow code and read it. Create a GitHub storage block from the UI or in Python code and use that in your Deployment instead of storing your flow code locally or baking your flow code into a Docker image. 
 
-Alternatively, create these blocks using code by following the templates in the [blocks](./blocks/) folder. 
+Note that you will have to push your code to GitHub, Prefect will not push it for you.
 
-## Create flow code
+Run your deployment in a local subprocess (the default if you don’t specify an infrastructure). Use the Green taxi data for the month of November 2020.
 
-Write your Python functions and add `@flow` and `@task` decorators. 
+How many rows were processed by the script?
 
-Note: all code should be run from the top level of your folder to keep file paths consistent.
+- 88,605
 
-## Create deployments
+## Question 5. Email or Slack notifications
 
-Create and apply your deployments.
+Q5. It’s often helpful to be notified when something with your dataflow doesn’t work as planned. Choose one of the options below for creating email or slack notifications.
 
-## Run a deployment or create a schedule
+The hosted Prefect Cloud lets you avoid running your own server and has Automations that allow you to get notifications when certain events occur or don’t occur. 
 
-Run a deployment ad hoc from the CLI or UI.
+Create a free forever Prefect Cloud account at app.prefect.cloud and connect your workspace to it following the steps in the UI when you sign up. 
 
-Or create a schedule from the UI or when you create your deployment.
+Set up an Automation that will send yourself an email when a flow run completes. Run the deployment used in Q4 for the Green taxi data for April 2019. Check your email to see the notification.
 
-## Start an agent
+Alternatively, use a Prefect Cloud Automation or a self-hosted Orion server Notification to get notifications in a Slack workspace via an incoming webhook. 
 
-Make sure your agent set up to poll the work queue you created when you made your deployment (*default* if you didn't specify a work queue).
+Join my temporary Slack workspace with [this link](https://join.slack.com/t/temp-notify/shared_invite/zt-1odklt4wh-hH~b89HN8MjMrPGEaOlxIw). 400 people can use this link and it expires in 90 days. 
 
-## Later: create a Docker Image and use a DockerContainer infrastructure block
+In the Prefect Cloud UI create an [Automation](https://docs.prefect.io/ui/automations) or in the Prefect Orion UI create a [Notification](https://docs.prefect.io/ui/notifications/) to send a Slack message when a flow run enters a Completed state. Here is the Webhook URL to use: https://hooks.slack.com/services/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
 
-Bake your flow code into a Docker image, create a DockerContainer, and your flow code in a Docker container.
+Test the functionality.
 
-## Optional: use Prefect Cloud for added capabilties
-Signup and use for free at https://app.prefect.cloud
+Alternatively, you can grab the webhook URL from your own Slack workspace and Slack App that you create. 
+
+
+How many rows were processed by the script?
+
+- `514,392`
+
+
+## Question 6. Secrets
+
+Prefect Secret blocks provide secure, encrypted storage in the database and obfuscation in the UI. Create a secret block in the UI that stores a fake 10-digit password to connect to a third-party service. Once you’ve created your block in the UI, how many characters are shown as asterisks (*) on the next page of the UI?
+
+- 8
