@@ -14,7 +14,6 @@
 ### [Week 4: Analytics engineering](week_4_analytics_engineering/)
 ### [Week 5: Batch processing](week_5_batch_processing)
 ### [Week 6: Streaming](week_6_stream_processing)
-### [Week 7, 8 & 9: Project](week_7_project)
 
 ## Instructors
 
